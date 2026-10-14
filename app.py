@@ -63,6 +63,7 @@ def inicializar_db():
                 ]
             )
 
+inicializar_db()
 
 def obtener_categorias():
     with conectar_db() as db:
