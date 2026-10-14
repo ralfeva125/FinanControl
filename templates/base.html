@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FinanControl{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor barra">
+      <a class="marca" href="{{ url_for('inicio') }}">FinanControl</a>
+      <nav>
+        <a href="{{ url_for('inicio') }}">Inicio</a>
+        <a href="{{ url_for('listar_gastos') }}">Gastos</a>
+        <a class="boton boton-claro" href="{{ url_for('crear_gasto') }}">+ Registrar gasto</a>
+      </nav>
+    </div>
+  </header>
+  <main class="contenedor contenido">
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% if mensajes %}
+        {% for categoria, mensaje in mensajes %}
+          <div class="alerta {{ categoria }}">{{ mensaje }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer><div class="contenedor">FinanControl · Sistema de gestión de gastos personales</div></footer>
+</body>
+</html>

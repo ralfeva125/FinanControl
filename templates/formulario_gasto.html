@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }} | FinanControl{% endblock %}
+{% block content %}
+<div class="formulario-marco">
+  <a class="volver" href="{{ url_for('listar_gastos') }}">← Volver a gastos</a>
+  <h1>{{ titulo }}</h1>
+  <p>Completa los datos del gasto. Los campos son obligatorios.</p>
+  <form method="post" class="formulario">
+    <label for="descripcion">Descripción</label>
+    <input id="descripcion" name="descripcion" type="text" maxlength="120" required
+           value="{{ gasto.get('descripcion', '') }}" placeholder="Ej. Compra de mercado">
+    <label for="valor">Valor</label>
+    <input id="valor" name="valor" type="number" min="0.01" step="0.01" required
+           value="{{ gasto.get('valor', '') }}" placeholder="Ej. 25000">
+    <label for="fecha">Fecha</label>
+    <input id="fecha" name="fecha" type="date" required value="{{ gasto.get('fecha', '') }}">
+    <label for="id_categoria">Categoría</label>
+    <select id="id_categoria" name="id_categoria" required>
+      <option value="">Selecciona una categoría</option>
+      {% for categoria in categorias %}
+        <option value="{{ categoria['id_categoria'] }}"
+          {% if gasto.get('id_categoria', '')|string == categoria['id_categoria']|string %}selected{% endif %}>
+          {{ categoria["nombre"] }}
+        </option>
+      {% endfor %}
+    </select>
+    <div class="botones-form">
+      <button class="boton" type="submit">Guardar gasto</button>
+      <a class="boton boton-secundario" href="{{ url_for('listar_gastos') }}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

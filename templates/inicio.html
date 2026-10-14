@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Inicio | FinanControl{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="sobrelinea">CONTROL DE GASTOS PERSONALES</p>
+    <h1>Organiza tus gastos<br>en un solo lugar.</h1>
+    <p>Registra tus movimientos y consulta la información de forma sencilla.</p>
+    <a class="boton" href="{{ url_for('crear_gasto') }}">Registrar un gasto</a>
+  </div>
+  <div class="hero-icono">FC</div>
+</section>
+<section class="tarjetas">
+  <article class="tarjeta">
+    <span class="etiqueta">Gastos registrados</span>
+    <strong>{{ resumen["cantidad"] }}</strong>
+    <small>Registros guardados</small>
+  </article>
+  <article class="tarjeta">
+    <span class="etiqueta">Valor acumulado</span>
+    <strong>${{ "{:,.2f}".format(resumen["total"]) }}</strong>
+    <small>Suma de los gastos registrados</small>
+  </article>
+</section>
+<section class="seccion-cabecera">
+  <div><h2>Últimos gastos</h2><p>Un vistazo a tus registros recientes.</p></div>
+  <a href="{{ url_for('listar_gastos') }}">Ver todos →</a>
+</section>
+{% if ultimos %}
+  <div class="tabla-contenedor"><table>
+    <thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th class="derecha">Valor</th></tr></thead>
+    <tbody>{% for gasto in ultimos %}
+      <tr><td>{{ gasto["descripcion"] }}</td><td><span class="chip">{{ gasto["categoria"] }}</span></td><td>{{ gasto["fecha"] }}</td><td class="derecha">${{ "{:,.2f}".format(gasto["valor"]) }}</td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+{% else %}
+  <div class="vacio"><h3>Aún no tienes gastos registrados</h3><p>Cuando agregues un gasto, aparecerá aquí.</p><a class="boton" href="{{ url_for('crear_gasto') }}">Registrar primer gasto</a></div>
+{% endif %}
+{% endblock %}

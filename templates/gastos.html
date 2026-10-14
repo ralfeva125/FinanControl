@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Gastos | FinanControl{% endblock %}
+{% block content %}
+<section class="seccion-cabecera">
+  <div><p class="sobrelinea">TU INFORMACIÓN</p><h1>Gastos personales</h1><p>Consulta, modifica o elimina tus registros.</p></div>
+  <a class="boton" href="{{ url_for('crear_gasto') }}">+ Registrar gasto</a>
+</section>
+{% if gastos %}
+<div class="tabla-contenedor"><table>
+  <thead><tr><th>Descripción</th><th>Categoría</th><th>Fecha</th><th class="derecha">Valor</th><th>Acciones</th></tr></thead>
+  <tbody>{% for gasto in gastos %}
+    <tr>
+      <td>{{ gasto["descripcion"] }}</td><td><span class="chip">{{ gasto["categoria"] }}</span></td>
+      <td>{{ gasto["fecha"] }}</td><td class="derecha">${{ "{:,.2f}".format(gasto["valor"]) }}</td>
+      <td class="acciones">
+        <a class="accion editar" href="{{ url_for('editar_gasto', id_gasto=gasto['id_gasto']) }}">Editar</a>
+        <form method="post" action="{{ url_for('eliminar_gasto', id_gasto=gasto['id_gasto']) }}" onsubmit="return confirm('¿Seguro que deseas eliminar este gasto?');">
+          <button class="accion eliminar" type="submit">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}</tbody>
+</table></div>
+{% else %}
+<div class="vacio"><h3>No hay gastos registrados</h3><p>Registra tu primer gasto para empezar.</p><a class="boton" href="{{ url_for('crear_gasto') }}">Registrar gasto</a></div>
+{% endif %}
+{% endblock %}
